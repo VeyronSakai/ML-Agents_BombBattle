@@ -1,0 +1,9 @@
+@startuml PlayerState
+[*] -> Idle
+Idle -> Move
+Move -> Collapse
+Collapse -> Idle
+Move -> Idle
+Idle -> Collapse
+Collapse -> Die
+@enduml

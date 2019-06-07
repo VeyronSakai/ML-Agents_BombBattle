@@ -1,0 +1,60 @@
+@startuml ClassDiagram
+namespace Manager{
+    enum GameState
+    enum AgentState
+
+    class GameStateManager{
+        + IReadOnlyProperty<GameState> CurrentGameState
+        + GameState
+        + void SetGameState()
+    }
+
+    class AgentStateManager<<MonoBehavior>>{
+        + IReadOnlyReactiveProperty<AgentState> CurrentAgentState
+        + AgentState AgentState
+        + void SetAgentState()
+    }
+
+    GameStateManager --> GameState
+    AgentStateManager --> AgentState
+}
+
+namespace Player{
+    class RobotAgent<<MonoBehavior>>{
+        - force
+        + void CollectObservations()
+        + void AgentAction()
+        + void AgentReset()
+    }
+
+    class BombThrower<<MonoBehavior>>
+
+    class PlayerHP<<MonoBehavior>>
+
+    class CollapseToIdle<<MonoBehavior>>
+
+    class ResultStateJudger<<MonoBehavior>>
+}
+
+namespace Bomb{
+    class BombExploder<<MonoBehavior>>
+
+    class ExplosionDestroyer<<MonoBehavior>>
+
+    class BlastHitter<<MonoBehavior>>
+}
+
+Player.RobotAgent ---> Manager.GameStateManager
+
+Bomb.BlastHitter ---> Manager.AgentStateManager
+
+Player.PlayerHP --> Manager.AgentStateManager
+
+Player.CollapseToIdle ---> Manager.AgentStateManager
+
+Player.ResultStateJudger ---> Player.PlayerHP
+
+Player.ResultStateJudger ---> Player.RobotAgent
+
+Player.BombThrower --> Player.RobotAgent
+@enduml
